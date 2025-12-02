@@ -430,6 +430,171 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAppointmentAppointment extends Struct.CollectionTypeSchema {
+  collectionName: 'appointments';
+  info: {
+    displayName: 'Appointment';
+    pluralName: 'appointments';
+    singularName: 'appointment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
+    doctor: Schema.Attribute.Relation<'oneToOne', 'api::doctor.doctor'>;
+    hour: Schema.Attribute.Time;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::appointment.appointment'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
+  collectionName: 'doctors';
+  info: {
+    displayName: 'Doctor';
+    pluralName: 'doctors';
+    singularName: 'doctor';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    lastname: Schema.Attribute.String & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::doctor.doctor'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    specialties: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::specialty.specialty'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSpecialtySpecialty extends Struct.CollectionTypeSchema {
+  collectionName: 'specialties';
+  info: {
+    displayName: 'Specialty';
+    pluralName: 'specialties';
+    singularName: 'specialty';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    doctor: Schema.Attribute.Relation<'manyToOne', 'api::doctor.doctor'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::specialty.specialty'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Specialties: Schema.Attribute.Enumeration<
+      [
+        'Alergolog\u00EDa',
+        'Algolog\u00EDa',
+        'An\u00E1lisis Cl\u00EDnico',
+        'Anatom\u00EDa Patol\u00F3gica',
+        'Anestesiolog\u00EDa',
+        'Angiolog\u00EDa',
+        'Auditor\u00EDa M\u00E9dica',
+        'Bioqu\u00EDmica Cl\u00EDnica',
+        'Cardiolog\u00EDa',
+        'Cirug\u00EDa Card\u00EDaca',
+        'Cirug\u00EDa Craneofacial',
+        'Cirug\u00EDa General',
+        'Cirug\u00EDa Oncol\u00F3gica',
+        'Cirug\u00EDa Oral y Maxilofacial',
+        'Cirug\u00EDa Pedi\u00E1trica',
+        'Cirug\u00EDa Pl\u00E1stica',
+        'Cirug\u00EDa Tor\u00E1cica',
+        'Cirug\u00EDa Vascular',
+        'Coloproctolog\u00EDa',
+        'Dermatolog\u00EDa',
+        'Embriolog\u00EDa',
+        'Endocrinolog\u00EDa',
+        'Epidemiolog\u00EDa',
+        'Estomatolog\u00EDa',
+        'Farmacolog\u00EDa',
+        'Farmacolog\u00EDa Cl\u00EDnica',
+        'Foniatr\u00EDa',
+        'Gastroenterolog\u00EDa',
+        'Gen\u00E9tica',
+        'Geriatr\u00EDa',
+        'Ginecolog\u00EDa y Obstetricia',
+        'Hematolog\u00EDa',
+        'Hepatolog\u00EDa',
+        'Infectolog\u00EDa',
+        'Inmunolog\u00EDa',
+        'Medicina Aeroespacial',
+        'Medicina de Emergencia',
+        'Medicina del Deporte',
+        'Medicina del Trabajo',
+        'Medicina Familiar y Comunitaria',
+        'Medicina F\u00EDsica y Rehabilitaci\u00F3n',
+        'Medicina Forense',
+        'Medicina Intensiva',
+        'Medicina Interna',
+        'Medicina Nuclear',
+        'Medicina Paliativa',
+        'Medicina Preventiva y Salud P\u00FAblica',
+        'Microbiolog\u00EDa y Parasitolog\u00EDa',
+        'Nefrolog\u00EDa',
+        'Neumolog\u00EDa',
+        'Neurocirug\u00EDa',
+        'Neurofisiolog\u00EDa Cl\u00EDnica',
+        'Neurolog\u00EDa',
+        'Nutriolog\u00EDa',
+        'Oftalmolog\u00EDa',
+        'Oncolog\u00EDa M\u00E9dica',
+        'Oncolog\u00EDa Radioter\u00E1pica',
+        'Otorrinolaringolog\u00EDa',
+        'Pediatr\u00EDa',
+        'Psiquiatr\u00EDa',
+        'Radiolog\u00EDa',
+        'Reumatolog\u00EDa',
+        'Salud P\u00FAblica',
+        'Toxicolog\u00EDa',
+        'Traumatolog\u00EDa y Ortopedia',
+        'Urolog\u00EDa',
+      ]
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -885,7 +1050,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -894,6 +1058,15 @@ export interface PluginUsersPermissionsUser
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    dni: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 8;
+          min: 8;
+        },
+        number
+      >;
     email: Schema.Attribute.Email &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -940,6 +1113,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::appointment.appointment': ApiAppointmentAppointment;
+      'api::doctor.doctor': ApiDoctorDoctor;
+      'api::specialty.specialty': ApiSpecialtySpecialty;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
