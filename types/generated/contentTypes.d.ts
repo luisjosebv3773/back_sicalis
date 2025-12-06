@@ -441,6 +441,11 @@ export interface ApiAppointmentAppointment extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    appointment_status: Schema.Attribute.Enumeration<
+      ['Hecho', 'No Asisti\u00F3', 'Cancelado', 'En espera']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'En espera'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -478,22 +483,95 @@ export interface ApiDoctorDoctor extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    lastname: Schema.Attribute.String & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::doctor.doctor'
     > &
       Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
+    medical_leave: Schema.Attribute.Text;
+    profession: Schema.Attribute.Enumeration<
+      [
+        'Alergolog\u00EDa',
+        'Algolog\u00EDa',
+        'An\u00E1lisis Cl\u00EDnico',
+        'Anatom\u00EDa Patol\u00F3gica',
+        'Anestesiolog\u00EDa',
+        'Angiolog\u00EDa',
+        'Auditor\u00EDa M\u00E9dica',
+        'Bioqu\u00EDmica Cl\u00EDnica',
+        'Cardiolog\u00EDa',
+        'Cirug\u00EDa Card\u00EDaca',
+        'Cirug\u00EDa Craneofacial',
+        'Cirug\u00EDa General',
+        'Cirug\u00EDa Oncol\u00F3gica',
+        'Cirug\u00EDa Oral y Maxilofacial',
+        'Cirug\u00EDa Pedi\u00E1trica',
+        'Cirug\u00EDa Pl\u00E1stica',
+        'Cirug\u00EDa Tor\u00E1cica',
+        'Cirug\u00EDa Vascular',
+        'Coloproctolog\u00EDa',
+        'Dermatolog\u00EDa',
+        'Embriolog\u00EDa',
+        'Endocrinolog\u00EDa',
+        'Epidemiolog\u00EDa',
+        'Estomatolog\u00EDa',
+        'Farmacolog\u00EDa',
+        'Farmacolog\u00EDa Cl\u00EDnica',
+        'Foniatr\u00EDa',
+        'Gastroenterolog\u00EDa',
+        'Gen\u00E9tica',
+        'Geriatr\u00EDa',
+        'Ginecolog\u00EDa y Obstetricia',
+        'Hematolog\u00EDa',
+        'Hepatolog\u00EDa',
+        'Infectolog\u00EDa',
+        'Inmunolog\u00EDa',
+        'Medicina Aeroespacial',
+        'Medicina de Emergencia',
+        'Medicina del Deporte',
+        'Medicina del Trabajo',
+        'Medicina Familiar y Comunitaria',
+        'Medicina F\u00EDsica y Rehabilitaci\u00F3n',
+        'Medicina Forense',
+        'Medicina Intensiva',
+        'Medicina Interna',
+        'Medicina Nuclear',
+        'Medicina Paliativa',
+        'Medicina Preventiva y Salud P\u00FAblica',
+        'Microbiolog\u00EDa y Parasitolog\u00EDa',
+        'Nefrolog\u00EDa',
+        'Neumolog\u00EDa',
+        'Neurocirug\u00EDa',
+        'Neurofisiolog\u00EDa Cl\u00EDnica',
+        'Neurolog\u00EDa',
+        'Nutriolog\u00EDa',
+        'Oftalmolog\u00EDa',
+        'Oncolog\u00EDa M\u00E9dica',
+        'Oncolog\u00EDa Radioter\u00E1pica',
+        'Otorrinolaringolog\u00EDa',
+        'Pediatr\u00EDa',
+        'Psiquiatr\u00EDa',
+        'Radiolog\u00EDa',
+        'Reumatolog\u00EDa',
+        'Salud P\u00FAblica',
+        'Toxicolog\u00EDa',
+        'Traumatolog\u00EDa y Ortopedia',
+        'Urolog\u00EDa',
+      ]
+    >;
     publishedAt: Schema.Attribute.DateTime;
-    specialties: Schema.Attribute.Relation<
-      'oneToMany',
+    specialty: Schema.Attribute.Relation<
+      'manyToOne',
       'api::specialty.specialty'
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_id: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -511,13 +589,14 @@ export interface ApiSpecialtySpecialty extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    doctor: Schema.Attribute.Relation<'manyToOne', 'api::doctor.doctor'>;
+    doctors: Schema.Attribute.Relation<'oneToMany', 'api::doctor.doctor'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::specialty.specialty'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     Specialties: Schema.Attribute.Enumeration<
       [
@@ -1062,7 +1141,6 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
-          max: 8;
           min: 8;
         },
         number

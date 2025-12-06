@@ -26,6 +26,17 @@
     },
     "hour": {
       "type": "time"
+    },
+    "appointment_status": {
+      "type": "enumeration",
+      "required": true,
+      "default": "En espera",
+      "enum": [
+        "Hecho",
+        "No Asistió",
+        "Cancelado",
+        "En espera"
+      ]
     }
   }
 }
